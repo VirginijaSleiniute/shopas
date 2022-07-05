@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Designer{% endblock %}
+
+{% block content %}
+<h2>{{ designer.first_name }} {{ designer.last_name }}</h2>
+<p>{{ designer.description }}</p>
+<p>We have these shoes:</p>
+{{ designer.display_items }}
+{% endblock %}

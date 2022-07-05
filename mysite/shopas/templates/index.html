@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h1>Designers Boutique</h1>
+  <p>Welcome!</p>
+  <p>Here you will find:</p>
+  <ul>
+    <li><strong>Shoes:</strong> {{ num_items }}</li>
+    <li><strong>Designers:</strong> {{ num_designers }}</li>
+    <p>
+    <p>Here you are visiting for the {{ num_visits }} time</p>
+  </ul>
+{% endblock %}

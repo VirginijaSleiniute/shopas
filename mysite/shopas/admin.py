@@ -1,7 +1,6 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import Category, Item, Order, Designer
+
 
 class ItemOrderInline(admin.TabularInline):
     model = Order
@@ -14,22 +13,21 @@ class ItemAdmin(admin.ModelAdmin):
     inlines = [ItemOrderInline]
 
 
-
 class DesignerAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'display_items')
 
 
 class ItemOrderAdmin(admin.ModelAdmin):
-    list_display = ('item', 'status')
-    search_fields = ('unique_id', 'item_title')
+    list_display = ('item', 'status', 'client', 'due_date')
+    search_fields = ('id', 'item_title')
     list_filter = ('item', 'status')
+    list_editable = ('due_date', 'status', 'client')
 
     fieldsets = (
-        ('General', {'fields': ('unique_id', 'item')}),
-        ('Availability', {'fields': ('status', 'due_back')}),
+        ('General', {'fields': ('item', 'client')}),
+        ('Availability', {'fields': ('status', 'due_date')}),
     )
 
-    
 
 admin.site.register(Category)
 admin.site.register(Item, ItemAdmin)

@@ -1,6 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import date
 
-# Create your models here.
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -38,7 +39,13 @@ class Order(models.Model):
     item = models.ForeignKey(to='Item', verbose_name="Item", on_delete=models.SET_NULL, null=True)
     qty = models.IntegerField(verbose_name="Quantity")
     due_date = models.DateTimeField(verbose_name="Due Date", null=True, blank=True)
+    client = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
    
+    @property
+    def is_overdue(self):
+        if self.due_date and date.today() > self.due_date:
+            return True
+        return False
 
     ORDER_STATUS = (
         ('a', 'Accepted'),
@@ -58,7 +65,7 @@ class Order(models.Model):
 
     @property
     def total_sum(self):
-        return self.item.price * self.qty
+       return self.item.price * self.qty
 
     class Meta:
         verbose_name = 'Order'

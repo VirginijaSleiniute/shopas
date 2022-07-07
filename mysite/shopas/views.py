@@ -3,10 +3,9 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
-
-# Create your views here.
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
+
 
 def index(request):
     num_items = Item.objects.all().count()
@@ -56,11 +55,19 @@ class ItemListView(generic.ListView):
     context_object_name = 'items'
     
 
-
 class ItemDetailView(generic.DetailView):
     model = Item
     template_name = 'item_detail.html'
     context_object_name = 'item'
+
+
+class UserItemListView(generic.ListView, LoginRequiredMixin):
+    model = Order
+    template_name = 'user_orders.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(client=self.request.user)
 
 
 

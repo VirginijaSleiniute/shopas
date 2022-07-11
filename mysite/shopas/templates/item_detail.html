@@ -1,10 +1,12 @@
 {% extends "base.html" %}
-
 {% block title %}Item{% endblock %}
-
 {% block content %}
 <img src="{{ item.photo.url }}" style="margin-bottom: 20px;">
-<h2>{{ item.title }} {{ item.designer }} ({{ item.price }})</h2>
+<h2>{{ item.title }} 
+    <br>
+    {{ item.designer }} 
+    <br>
+    {{ item.price }} €</h2>
 <p>{{ item.summary }}</p>
 <p>{{ item.display_category }}</p>
 {% endblock %}

@@ -5,9 +5,9 @@
 {% block content %}
 <h1>My orders:</h1>
 {% for orders in items %}
-<p><strong>ID: </strong>{{ orders.item }}</p>
-<p><strong>Order: </strong><a href="{% url 'order' orders.item.id %}">{{ orders.item.designer }} - {{ orders.item.title }}</a></p>
-<p><strong>Due Date: </strong><a class="{% if order.is_overdue %}text-danger{% endif %}">{{ orders.due_date }}</a></p>
+<p><strong>ID: </strong>{{ order.item }}</p>
+<p><strong>Order: </strong><a href="{% url 'orders' orders.item.id %}">{{ orders.item.designer }} - {{ orders.item.title }}</a></p>
+<p><strong>Due Date: </strong><a class="{% if orders.is_overdue %}text-danger{% endif %}">{{ orders.due_date }}</a></p>
 <hr/>
 {% endfor %}
 {% endblock %}

@@ -23,6 +23,8 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
           {# čia dedami meniu punktai #}
+          <img src="{% static 'images/shopping-cart.png' %}">
+          <br>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'index' %}">HOME</a>
         </li>
@@ -39,7 +41,7 @@
               </svg>
             {{ user.get_username }}</a></li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'my-orders' %}">My Orders</a>
+          <a class="nav-link" href="{% url 'client-orders' %}">My Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>

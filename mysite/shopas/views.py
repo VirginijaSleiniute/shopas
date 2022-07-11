@@ -50,7 +50,7 @@ def search(request):
 
 class ItemListView(generic.ListView):
     model = Item
-    paginate_by = 10
+    paginate_by = 6
     template_name = 'item_list.html'
     context_object_name = 'items'
     
@@ -61,7 +61,7 @@ class ItemDetailView(generic.DetailView):
     context_object_name = 'item'
 
 
-class UserItemListView(generic.ListView, LoginRequiredMixin):
+class UserItemListView(LoginRequiredMixin, generic.ListView):
     model = Order
     template_name = 'user_orders.html'
     context_object_name = 'orders'

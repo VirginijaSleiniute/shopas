@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from tinymce.models import HTMLField
 
 
 class Category(models.Model):
@@ -75,6 +76,7 @@ class Order(models.Model):
 class Designer(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+    description = HTMLField("Description", null=True, blank=True)
 
     def display_items(self):
         return ', '.join(item.title for item in self.items.all())

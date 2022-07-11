@@ -23,7 +23,9 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
           {# čia dedami meniu punktai #}
+          <a href="{% url 'cart' %}">
           <img src="{% static 'images/shopping-cart.png' %}">
+        </a>
           <br>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'index' %}">HOME</a>

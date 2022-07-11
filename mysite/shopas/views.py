@@ -70,4 +70,9 @@ class UserItemListView(LoginRequiredMixin, generic.ListView):
         return Order.objects.filter(client=self.request.user)
 
 
+def cart(request):
+    context = {}
+    return render(request, 'cart.html', context)
+
+
 

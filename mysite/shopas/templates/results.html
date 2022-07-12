@@ -7,7 +7,7 @@
   <ul>
     {% for item in items %}
       <li>
-        <a href="{{ item.id }}">{{ item.title }}</a> ({{item.designer}})
+        <a href="{% url 'item-detail' item.id %}">{{ item.title }}</a> ({{item.designer}})
       </li>
     {% endfor %}
   </ul>

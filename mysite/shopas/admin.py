@@ -25,7 +25,7 @@ class ItemOrderAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {'fields': ('item', 'client')}),
-        ('Availability', {'fields': ('status', 'due_date')}),
+        ('Availability', {'fields': ('status', 'due_date', 'qty')}),
     )
 
 

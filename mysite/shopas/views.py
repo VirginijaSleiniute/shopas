@@ -1,6 +1,7 @@
+from venv import create
 from .models import Category, Item, Order, Designer
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -61,7 +62,7 @@ class ItemDetailView(generic.DetailView):
     context_object_name = 'item'
 
 
-class UserItemListView(LoginRequiredMixin, generic.ListView):
+class UserItemListView(generic.ListView, LoginRequiredMixin):
     model = Order
     template_name = 'user_orders.html'
     context_object_name = 'orders'
@@ -73,6 +74,8 @@ class UserItemListView(LoginRequiredMixin, generic.ListView):
 def cart(request):
     context = {}
     return render(request, 'cart.html', context)
+
+
 
 
 

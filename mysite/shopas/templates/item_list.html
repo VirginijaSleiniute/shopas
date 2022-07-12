@@ -15,9 +15,9 @@
             {% endif %}
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted">{{ item.designer }}</h6>
-              <button  class="btn btn-outline-success add-btn">To Cart</button>
+              <a href="{% url 'cart' %}"><button class="btn btn-outline-success add-btn">To Cart</button></a>
               <h4 style="display: inline-block; float: right"><strong>{{ item.price }} €</strong></h4>
-              <p class="card-text"><a href="{{ item.id }}">{{ item.title }}</a></p>
+              <p class="card-text"><a href="{% url 'item-detail' item.id %}">{{ item.title }}</a></p>
             </div>
           </div>
         </div>

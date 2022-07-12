@@ -41,12 +41,7 @@ class Order(models.Model):
     qty = models.IntegerField(verbose_name="Quantity")
     due_date = models.DateTimeField(verbose_name="Due Date", null=True, blank=True)
     client = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-   
-    @property
-    def is_overdue(self):
-        if self.due_date and date.today() > self.due_date:
-            return True
-        return False
+
 
     ORDER_STATUS = (
         ('a', 'Accepted'),
@@ -65,8 +60,18 @@ class Order(models.Model):
 
 
     @property
-    def total_sum(self):
-       return self.item.price * self.qty
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitems])
+        return total 
+   
+
+    @property
+    def is_overdue(self):
+        if self.due_date and date.today() > self.due_date:
+            return True
+        return False
+
 
     class Meta:
         verbose_name = 'Order'

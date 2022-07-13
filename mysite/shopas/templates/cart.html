@@ -7,7 +7,7 @@
 
 			<table class="table">
 				<tr>
-					<th><h5>Total:<strong> {{ order.get_cart_total }}</strong></h5></th>
+					<th><h5>Total:<strong> {{ cart.get_total }}</strong></h5></th>
 					<th>
 					</th>
 				</tr>
@@ -15,17 +15,20 @@
 			<br>
 			<div class="box-element">
 				<div class="cart-row">
-					<div style="flex:2"></div>
-					<div style="flex:2"><strong>Item: </strong></div>
+					<div style="flex:4"><strong>Item: </strong></div>
 					<div style="flex:1"><strong>Price: </strong></div>
 					<div style="flex:1"><strong>Quantity: </strong></div>
 					<div style="flex:1"><strong>Total: </strong></div>
 				</div>
-				{% for item in items %}
-				<div class="row">
-					<div><p>{{ item.name}}</p></div>
-					<div><p>{{ item.price|floatformat:2 }} €</p></div>
-					<div><p>{{ item.qty }}</p></div>
+				{% for order_line in cart.order_lines.all %}
+				<div class="cart-row">
+					<div style="flex:4"><p>{{ order_line.item.title }}</p></div>
+					<div style="flex:1"><p>{{ order_line.item.price|floatformat:2 }} €</p></div>
+					<div style="flex:1"><p>{{ order_line.qty }}</p></div>
+					<div style="flex:1"><p>{{ order_line.get_total }}</p></div>
 				</div>
 				{% endfor %}
+			</div>
+		</div>
+	</div>
 {% endblock content %}

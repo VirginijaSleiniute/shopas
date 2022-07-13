@@ -19,7 +19,7 @@ class Item(models.Model):
     title = models.CharField(max_length=200)
     designer = models.ForeignKey('Designer', on_delete=models.SET_NULL, null=True, related_name='items')
     summary = models.TextField(max_length=1000)
-    price = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     category = models.ManyToManyField(Category)
     photo = models.ImageField('Photo', upload_to='photos', null=True, blank=True)
 
@@ -34,48 +34,6 @@ class Item(models.Model):
     class Meta:
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
-
-
-class Order(models.Model):
-    item = models.ForeignKey(to='Item', verbose_name="Item", on_delete=models.SET_NULL, null=True)
-    qty = models.IntegerField(verbose_name="Quantity")
-    due_date = models.DateTimeField(verbose_name="Due Date", null=True, blank=True)
-    client = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-
-
-    ORDER_STATUS = (
-        ('a', 'Accepted'),
-        ('i', 'In Progress'),
-        ('d', 'Done'),
-        ('c', 'Cancelled'),
-    )
-
-    status = models.CharField(
-        max_length=1,
-        choices=ORDER_STATUS,
-        blank=True,
-        default='a',
-        help_text='Status',
-    )
-
-
-    @property
-    def get_cart_total(self):
-        orderitems = self.orderitem_set.all()
-        total = sum([item.get_total for item in orderitems])
-        return total 
-   
-
-    @property
-    def is_overdue(self):
-        if self.due_date and date.today() > self.due_date:
-            return True
-        return False
-
-
-    class Meta:
-        verbose_name = 'Order'
-        verbose_name_plural = 'Orders'
 
 
 class Designer(models.Model):
@@ -95,5 +53,61 @@ class Designer(models.Model):
     class Meta:
         verbose_name = 'Designer'
         verbose_name_plural = 'Designers'
+
+
+class Cart(models.Model):
+    created_add = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='carts')
+
+    def __str__(self):
+        return f'{self.item} {self.quantity}'
+
+
+    ORDER_STATUS = (
+        ('a', 'Accepted'),
+        ('i', 'In Progress'),
+        ('d', 'Done'),
+        ('c', 'Cancelled'),
+        ('k', 'Cart'),
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=ORDER_STATUS,
+        blank=True,
+        default='k',
+        help_text='Status',
+    )
+
+
+    @property
+    def get_total(self):
+        orderitems = self.order_lines.all()
+        total = sum([item.get_total for item in orderitems])
+        return total 
+
+
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
+
+class OrderLine(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+    cart = models.ForeignKey(Cart, verbose_name="Cart", on_delete=models.SET_NULL, null=True, related_name='order_lines')
+    qty = models.IntegerField(verbose_name="Quantity")
+
+    @property
+    def get_total(self):
+        total = self.item.price * self.qty
+        return total
+
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
+
+
 
     

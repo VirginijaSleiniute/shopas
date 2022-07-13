@@ -1,11 +1,12 @@
 from venv import create
-from .models import Category, Item, Order, Designer
+from .models import Category, Item, OrderLine, Designer, Cart
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -62,18 +63,34 @@ class ItemDetailView(generic.DetailView):
     context_object_name = 'item'
 
 
-class UserItemListView(generic.ListView, LoginRequiredMixin):
-    model = Order
-    template_name = 'user_orders.html'
-    context_object_name = 'orders'
-
-    def get_queryset(self):
-        return Order.objects.filter(client=self.request.user)
-
-
+@login_required
 def cart(request):
-    context = {}
+    try:
+        cart = Cart.objects.get(user = request.user, status='k')
+    except:
+        cart = Cart(user = request.user, status='k')
+        cart.save()
+    context = {'cart':cart}
     return render(request, 'cart.html', context)
+
+
+@login_required
+def add_to_cart(request, item_id, qty):
+    item = Item.objects.get(pk=item_id)
+    try:
+        cart = Cart.objects.get(user = request.user, status='k')
+    except:
+        cart = Cart(user = request.user, status='k')
+        cart.save()
+  
+    order_line = OrderLine(item=item, cart=cart, qty=qty)
+    order_line.save()
+    
+    context = {'cart':cart}
+    return render(request, 'cart.html', context)
+
+
+
 
 
 
